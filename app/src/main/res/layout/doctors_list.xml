@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginRight="10sp"
+        android:layout_marginBottom="5sp"
+        android:background="@color/grey"
+        android:backgroundTintMode="add"
+        android:paddingLeft="5sp"
+        android:paddingTop="5sp"
+        android:paddingRight="5sp"
+        android:paddingBottom="5sp">
+
+        <TextView
+            android:id="@+id/doc_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ФИО:"
+            android:textAlignment="center"
+            android:textColor="@color/dark_grey"
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="5dp" />
+
+        <TextView
+            android:id="@+id/doc_speciality"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Специальность:"
+            android:textAlignment="center"
+            android:textColor="@color/dark_grey"
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintTop_toBottomOf="@id/doc_name"
+            tools:layout_editor_absoluteX="5dp" />
+
+        <TextView
+            android:id="@+id/doc_room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Кабинет:"
+            android:textAlignment="center"
+            android:textColor="@color/dark_grey"
+            android:textSize="24sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintTop_toBottomOf="@id/doc_speciality"
+            tools:layout_editor_absoluteX="5dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

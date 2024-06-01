@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reception_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Reception">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/doctors_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="8dp"
+            android:backgroundTint="@color/grey"
+            android:backgroundTintMode="add"
+            android:text="Врачи"
+            android:textColor="@color/dark_grey"
+            android:textSize="24sp"
+            app:cornerRadius="15sp" />
+
+        <Button
+            android:id="@+id/patient_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="8dp"
+            android:backgroundTint="@color/grey"
+            android:backgroundTintMode="add"
+            android:text="Информация о пациенте"
+            android:textColor="@color/dark_grey"
+            android:textSize="24sp"
+            app:cornerRadius="15sp" />
+
+        <Button
+            android:id="@+id/doctors_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="8dp"
+            android:backgroundTint="@color/grey"
+            android:backgroundTintMode="add"
+            android:text="Расписание специалистов"
+            android:textColor="@color/dark_grey"
+            android:textSize="24sp"
+            app:cornerRadius="15sp" />
+
+        <Button
+            android:id="@+id/print_docs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="8dp"
+            android:backgroundTint="@color/grey"
+            android:backgroundTintMode="add"
+            android:text="Печать документов"
+            android:textColor="@color/dark_grey"
+            android:textSize="24sp"
+            app:cornerRadius="15sp" />
+    </LinearLayout>
+</FrameLayout>

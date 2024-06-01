@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Здоровый Зяблик</string>
+    <string name="doctors">Врачи</string>
+    <string name="about_patient">О пациенте</string>
+    <string name="profile">Профиль</string>
+    <string name="in_progress">Функция в разработке</string>
+    <string-array name="names">
+        <item>Doc</item>
+        <item>Doc</item>
+    </string-array>
+    <string-array name="spec">
+        <item>Spec</item>
+        <item>Spec</item>
+    </string-array>
+    <string-array name="rooms">
+        <item>Room</item>
+        <item>Room</item>
+    </string-array>
+</resources>

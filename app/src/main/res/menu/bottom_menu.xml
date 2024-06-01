@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/reception_page"
+        android:icon="@drawable/baseline_article_24"
+        android:title="Регистратура" />
+    <item
+        android:id="@+id/go_to_doctor_page"
+        android:icon="@drawable/baseline_add_box_24"
+        android:title="Запись пациента" />
+    <item
+        android:id="@+id/profile_page"
+        android:icon="@drawable/baseline_account_box_24"
+        android:title="Профиль" />
+</menu>
