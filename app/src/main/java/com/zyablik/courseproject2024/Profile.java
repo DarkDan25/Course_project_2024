@@ -11,9 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.badge.BadgeUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,11 +33,14 @@ public class Profile extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private Button edit_profile_butt;
     private Button quit_butt;
-
+    private TextView email;
+    private TextView ID;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    FirebaseAuth auth;
+    FirebaseUser usr;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     public Profile() {
         // Required empty public constructor
     }
@@ -67,12 +75,21 @@ public class Profile extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        auth = FirebaseAuth.getInstance();
+        usr = auth.getCurrentUser();
+
         edit_profile_butt = view.findViewById(R.id.edit_profile);
         quit_butt = view.findViewById(R.id.quit_from_profile);
+        email = view.findViewById(R.id.email_text);
+        ID = view.findViewById(R.id.id_text);
+        getID(ID);
+        email.setText("Почта: " + usr.getEmail());
         edit_profile_butt.setOnClickListener(v->{
             Toast.makeText(getContext(), R.string.in_progress, Toast.LENGTH_LONG).show();
         });
         quit_butt.setOnClickListener(v ->{
+            auth.signOut();
+            Toast.makeText(getContext(), "Успешно вышли из аккаунта", Toast.LENGTH_LONG).show();
             startActivity(new Intent(view.getContext(), AuthActivity.class));
             getActivity().finish();
         });
@@ -83,5 +100,19 @@ public class Profile extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+    public void getID(TextView id){
+        db.collection("users")
+                .whereEqualTo("email", usr.getEmail().toString())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String title;
+                        for (DocumentSnapshot doc : task.getResult()) {
+                            title = doc.getData().get("id").toString();
+                            id.setText("ID: "+title);
+                        }
+                    }
+                });
     }
 }

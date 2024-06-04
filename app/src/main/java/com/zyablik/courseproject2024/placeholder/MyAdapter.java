@@ -13,6 +13,7 @@ import com.zyablik.courseproject2024.R;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.VHolder> {
@@ -45,17 +46,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.VHolder> {
             itemName = itemsName.get(position);
         }
         else{
-            itemName = "Apple";
+            itemName = "-";
         }
         if (position < itemsRooms.size()) {
             itemRoom = itemsRooms.get(position);
         } else {
-            itemRoom = "Lol";
+            itemRoom = "-";
         }
         if (position < itemsSpec.size()) {
             itemSpec = itemsSpec.get(position);
         }else{
-            itemSpec = "Boop";
+            itemSpec = "-";
         }
 
         holder.doc_name.setText(itemName);

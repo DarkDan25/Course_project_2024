@@ -11,6 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +39,10 @@ public class RegFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     Button regbutt;
+    TextView email;
+    TextView password;
+    FirebaseAuth mAuth;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public RegFragment() {
         // Required empty public constructor
@@ -65,9 +80,22 @@ public class RegFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         regbutt = view.findViewById(R.id.reg_button);
+        email = view.findViewById(R.id.login_field);
+        password = view.findViewById(R.id.reg_password);
+        mAuth = FirebaseAuth.getInstance();
+
         regbutt.setOnClickListener(v -> {
-            startActivity(new Intent(view.getContext(), MainActivity.class));
-            getActivity().finish();
+            mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                    .addOnCompleteListener(getActivity(), task -> {
+                        if (task.isSuccessful()) {
+                            addUser(email.getText().toString(), "TestName", "testSurname", "9235", view);
+                            startActivity(new Intent(view.getContext(), MainActivity.class));
+                            getActivity().finish();
+                        } else {
+                            email.setText("");
+                            password.setText("");
+                        }
+                    });
         });
     }
 
@@ -76,5 +104,24 @@ public class RegFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_reg, container, false);
+    }
+
+    public void addUser(String emailstr, String name, String surname, String idstr, View view) {
+        int id = Integer.parseInt(idstr);
+        Map<String, Object> user = new HashMap<>();
+
+        user.put("email", emailstr);
+        user.put("name", name);
+        user.put("surname", surname);
+        user.put("id", id); // Он же будет СНИЛС'ом
+        user.put("role", "user");
+
+        db.collection("users").document(idstr)
+                .set(user)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(view.getContext(), "Greetings, " + mAuth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(unused -> {
+                    Toast.makeText(view.getContext(), "Couldn't create account", Toast.LENGTH_SHORT).show();
+                });
     }
 }

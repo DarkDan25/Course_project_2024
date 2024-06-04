@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "424076841908",
+    "project_id": "course-project-f2807",
+    "storage_bucket": "course-project-f2807.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424076841908:android:e49b126332aaaefa50d8e1",
+        "android_client_info": {
+          "package_name": "com.zyablik.courseproject2024"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdBCLm05czK9MVCRErym9ZkK374Q7p8jQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

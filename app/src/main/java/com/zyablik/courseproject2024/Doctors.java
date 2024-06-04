@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.zyablik.courseproject2024.placeholder.MyAdapter;
 
 import java.util.ArrayList;
@@ -34,7 +37,11 @@ public class Doctors extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ArrayList<String> docnames;
+    ArrayList<String> docSpecs;
+    ArrayList<String> docnRooms;
+    MyAdapter adapter;
     public Doctors() {
         // Required empty public constructor
     }
@@ -71,14 +78,31 @@ public class Doctors extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView rView = view.findViewById(R.id.doctors_list);
         rView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ArrayList<String> docnames = new ArrayList<>(Arrays.asList
-                (getResources().getStringArray(R.array.names)));
-        ArrayList<String> docSpecs = new ArrayList<>(Arrays.asList
-                (getResources().getStringArray(R.array.spec)))  ;
-        ArrayList<String> docnRooms = new ArrayList<>(Arrays.asList
-                (getResources().getStringArray(R.array.rooms)));
-        MyAdapter adapter = new MyAdapter(docnames,docSpecs, docnRooms);
-        rView.setAdapter(adapter);
+        docnames = new ArrayList<>();
+        docSpecs = new ArrayList<>();
+        docnRooms = new ArrayList<>();
+        String[] test;
+        db.collection("doctors")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String namesurname;
+                        String spec;
+                        String room;
+                        for (DocumentSnapshot doc : task.getResult()) {
+                            namesurname = doc.getData().get("name").toString()+" "+ doc.getData().get("surname").toString();
+                            spec = doc.getData().get("speciality").toString();
+                            room = doc.getData().get("room").toString();
+                            Log.d("d",namesurname.toString()+spec.toString()+room.toString());
+                            docnames.add(namesurname.toString());
+                            docSpecs.add(spec.toString());
+                            docnRooms.add(room.toString());
+                        }
+                        adapter = new MyAdapter(docnames,docSpecs, docnRooms);
+                        System.out.println(docnames.size());
+                        rView.setAdapter(adapter);
+                    }
+                });
     }
 
     @Override

@@ -12,6 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +41,11 @@ public class login extends Fragment {
     private String mParam2;
     private Button regbutt;
     private Button logbutt;
+    private TextView email;
+    private TextView pswrd;
+    FirebaseAuth auth;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     public login() {
         // Required empty public constructor
     }
@@ -60,10 +76,14 @@ public class login extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         regbutt = view.findViewById(R.id.register_button);
+        auth = FirebaseAuth.getInstance();
+        email = view.findViewById(R.id.login_field);
+        pswrd = view.findViewById(R.id.reg_password);
         regbutt.setOnClickListener(v -> {
             Fragment Registration = new RegFragment();
             FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -72,14 +92,40 @@ public class login extends Fragment {
 
         logbutt = view.findViewById(R.id.log_button);
         logbutt.setOnClickListener(v -> {
-            startActivity(new Intent(view.getContext(), MainActivity.class));
-            getActivity().finish();
+            auth.signInWithEmailAndPassword(email.getText().toString(), pswrd.getText().toString())
+                    .addOnCompleteListener(getActivity(), task -> {
+                        if (task.isSuccessful()) {
+                            getNameSurname(view);
+                            startActivity(new Intent(view.getContext(), MainActivity.class));
+                            getActivity().finish();
+                        } else {
+                            Toast.makeText(view.getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            email.setText("");
+                            pswrd.setText("");
+                        }
+                    });
         });
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
+    }
+
+    private void getNameSurname(View view) {
+        db.collection("users")
+                .whereEqualTo("email", auth.getCurrentUser().getEmail().toString())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String title;
+                        for (DocumentSnapshot doc : task.getResult()) {
+                            title = doc.getData().get("name").toString() + " " + doc.getData().get("surname").toString();
+                            Toast.makeText(view.getContext(), "Welcome back, " + title, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }
