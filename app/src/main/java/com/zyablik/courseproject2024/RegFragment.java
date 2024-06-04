@@ -41,6 +41,10 @@ public class RegFragment extends Fragment {
     Button regbutt;
     TextView email;
     TextView password;
+    TextView snils;
+    TextView gender;
+    TextView name;
+    TextView surname;
     FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -82,20 +86,36 @@ public class RegFragment extends Fragment {
         regbutt = view.findViewById(R.id.reg_button);
         email = view.findViewById(R.id.login_field);
         password = view.findViewById(R.id.reg_password);
+        name = view.findViewById(R.id.name_field);
+        surname = view.findViewById(R.id.surname_field);
+        snils = view.findViewById(R.id.snils_regfield);
+        gender = view.findViewById(R.id.gender_field);
+
         mAuth = FirebaseAuth.getInstance();
 
         regbutt.setOnClickListener(v -> {
-            mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                    .addOnCompleteListener(getActivity(), task -> {
-                        if (task.isSuccessful()) {
-                            addUser(email.getText().toString(), "TestName", "testSurname", "9235", view);
-                            startActivity(new Intent(view.getContext(), MainActivity.class));
-                            getActivity().finish();
-                        } else {
-                            email.setText("");
-                            password.setText("");
-                        }
-                    });
+            if (!name.getText().toString().isEmpty() &&
+                    !surname.getText().toString().isEmpty()&&
+                    !password.getText().toString().isEmpty()&&
+                    !email.getText().toString().isEmpty()&&
+                    !gender.getText().toString().isEmpty()&&
+                    !snils.getText().toString().isEmpty()){
+                mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                        .addOnCompleteListener(getActivity(), task -> {
+                            if (task.isSuccessful()) {
+                                addUser(email.getText().toString(), name.getText().toString(),
+                                        surname.getText().toString(), snils.getText().toString(), gender.getText().toString(),view);
+                                startActivity(new Intent(view.getContext(), MainActivity.class));
+                                getActivity().finish();
+                            } else {
+                                email.setText("");
+                                password.setText("");
+                            }
+                        });
+            }
+            else {
+                Toast.makeText(view.getContext(), "Все должно быть заполнено!", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -106,7 +126,7 @@ public class RegFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_reg, container, false);
     }
 
-    public void addUser(String emailstr, String name, String surname, String idstr, View view) {
+    public void addUser(String emailstr, String name, String surname, String idstr, String gend, View view) {
         int id = Integer.parseInt(idstr);
         Map<String, Object> user = new HashMap<>();
 
@@ -115,6 +135,7 @@ public class RegFragment extends Fragment {
         user.put("surname", surname);
         user.put("id", id); // Он же будет СНИЛС'ом
         user.put("role", "user");
+        user.put("gender", gend);
 
         db.collection("users").document(idstr)
                 .set(user)

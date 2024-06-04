@@ -11,6 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +34,8 @@ public class AboutPatient extends Fragment {
     private String mParam1;
     private String mParam2;
     private Button find_butt;
-
+    private TextView type_snils;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     public AboutPatient() {
         // Required empty public constructor
     }
@@ -63,9 +70,31 @@ public class AboutPatient extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         find_butt = view.findViewById(R.id.find_button);
+        type_snils = view.findViewById(R.id.snils_field);
         find_butt.setOnClickListener(v ->{
             FrameLayout f = view.findViewById(R.id.info_pati);
             f.setVisibility(View.VISIBLE);
+            TextView snls =  f.findViewById(R.id.snils_text);
+            TextView nm = f.findViewById(R.id.fio_text);
+            TextView gndr = f.findViewById(R.id.gender_text);
+            db.collection("users")
+                    .whereEqualTo("id", Integer.parseInt(type_snils.getText().toString()))
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            String title;
+                            String namesurname;
+                            String gender;
+                            for (DocumentSnapshot doc : task.getResult()) {
+                                title = doc.getId().toString();
+                                namesurname = doc.get("name").toString() +" "+doc.get("surname").toString();
+                                gender = doc.get("gender").toString();
+                                snls.setText("СНИЛС: "+title);
+                                nm.setText("ФИ: "+namesurname);
+                                gndr.setText("Пол: "+gender);
+                            }
+                        }
+                    });
         });
     }
 
@@ -74,5 +103,8 @@ public class AboutPatient extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_about_patient, container, false);
+    }
+    public void getID(TextView id){
+
     }
 }

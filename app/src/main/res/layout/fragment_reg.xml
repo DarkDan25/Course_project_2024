@@ -26,28 +26,59 @@
             android:id="@+id/reg_password"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:ems="10"
             android:hint="Введите пароль"
             android:inputType="text|textPassword"
+            app:layout_constraintBottom_toTopOf="@id/name_field"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <EditText
+            android:id="@+id/name_field"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:ems="10"
+            android:hint="Введите имя"
+            android:inputType="text"
+            app:layout_constraintBottom_toTopOf="@id/surname_field"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <EditText
+            android:id="@+id/surname_field"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:ems="10"
+            android:hint="Введите фамилию"
+            android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/login_field"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/confrim_reg_password"
+            android:id="@+id/gender_field"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginTop="5dp"
             android:ems="10"
-            android:hint="Подтвердите пароль"
-            android:inputType="textPassword"
+            android:hint="Введите пол"
+            android:inputType="text"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reg_password" />
+            app:layout_constraintTop_toBottomOf="@id/surname_field" />
+
+        <EditText
+            android:id="@+id/snils_regfield"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:ems="10"
+            android:hint="Введите СНИЛС"
+            android:inputType="number"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gender_field" />
 
         <Button
             android:id="@+id/reg_button"
@@ -59,7 +90,7 @@
             android:text="Регистрация"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/confrim_reg_password" />
+            app:layout_constraintTop_toBottomOf="@id/snils_regfield" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
