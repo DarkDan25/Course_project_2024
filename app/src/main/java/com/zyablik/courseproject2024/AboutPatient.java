@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -73,15 +74,15 @@ public class AboutPatient extends Fragment {
         type_snils = view.findViewById(R.id.snils_field);
         find_butt.setOnClickListener(v ->{
             FrameLayout f = view.findViewById(R.id.info_pati);
-            f.setVisibility(View.VISIBLE);
             TextView snls =  f.findViewById(R.id.snils_text);
-            TextView nm = f.findViewById(R.id.fio_text);
-            TextView gndr = f.findViewById(R.id.gender_text);
             db.collection("users")
                     .whereEqualTo("id", Integer.parseInt(type_snils.getText().toString()))
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+                            f.setVisibility(View.VISIBLE);
+                            TextView nm = f.findViewById(R.id.fio_text);
+                            TextView gndr = f.findViewById(R.id.gender_text);
                             String title;
                             String namesurname;
                             String gender;
@@ -93,6 +94,9 @@ public class AboutPatient extends Fragment {
                                 nm.setText("ФИ: "+namesurname);
                                 gndr.setText("Пол: "+gender);
                             }
+                        }
+                        else{
+                            Toast.makeText(view.getContext(), "Patient "+ snls.getText().toString()+" doesn't exist!", Toast.LENGTH_SHORT).show();
                         }
                     });
         });

@@ -109,7 +109,7 @@ public class Profile extends Fragment {
                     if (task.isSuccessful()) {
                         String title;
                         for (DocumentSnapshot doc : task.getResult()) {
-                            title = doc.getData().get("id").toString();
+                            title = doc.get("id").toString();
                             id.setText("ID: "+title);
                         }
                     }

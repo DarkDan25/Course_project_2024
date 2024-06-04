@@ -92,7 +92,7 @@ public class login extends Fragment {
 
         logbutt = view.findViewById(R.id.log_button);
         logbutt.setOnClickListener(v -> {
-            auth.signInWithEmailAndPassword(email.getText().toString(), pswrd.getText().toString())
+            auth.signInWithEmailAndPassword(email.getText().toString().toLowerCase(), pswrd.getText().toString())
                     .addOnCompleteListener(getActivity(), task -> {
                         if (task.isSuccessful()) {
                             getNameSurname(view);
@@ -122,7 +122,7 @@ public class login extends Fragment {
                     if (task.isSuccessful()) {
                         String title;
                         for (DocumentSnapshot doc : task.getResult()) {
-                            title = doc.getData().get("name").toString() + " " + doc.getData().get("surname").toString();
+                            title = doc.get("name").toString() + " " + doc.get("surname").toString();
                             Toast.makeText(view.getContext(), "Welcome back, " + title, Toast.LENGTH_SHORT).show();
                         }
                     }

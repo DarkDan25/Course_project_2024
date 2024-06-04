@@ -103,7 +103,7 @@ public class RegFragment extends Fragment {
                 mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                         .addOnCompleteListener(getActivity(), task -> {
                             if (task.isSuccessful()) {
-                                addUser(email.getText().toString(), name.getText().toString(),
+                                addUser(email.getText().toString().toLowerCase(), name.getText().toString(),
                                         surname.getText().toString(), snils.getText().toString(), gender.getText().toString(),view);
                                 startActivity(new Intent(view.getContext(), MainActivity.class));
                                 getActivity().finish();

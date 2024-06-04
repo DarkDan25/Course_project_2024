@@ -14,7 +14,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import org.w3c.dom.Text;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,7 +42,10 @@ public class Reception extends Fragment {
     private Button print_docs;
     private Button doctors;
     private Button about_patient;
-
+    private Button addDoc;
+    private String usrRole;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser usr = FirebaseAuth.getInstance().getCurrentUser();
     public Reception() {
         // Required empty public constructor
     }
@@ -74,7 +84,9 @@ public class Reception extends Fragment {
         about_patient = view.findViewById(R.id.patient_info);
         doctors_table = view.findViewById(R.id.doctors_table);
         print_docs = view.findViewById(R.id.print_docs);
+        addDoc = view.findViewById(R.id.add_doctor);
         TextView header = getActivity().findViewById(R.id.header_text);
+        getRole();
         doctors_table.setOnClickListener(v -> {
             Toast.makeText(getContext(), R.string.in_progress, Toast.LENGTH_LONG).show();
         });
@@ -92,6 +104,11 @@ public class Reception extends Fragment {
             header.setText(R.string.about_patient);
             fm.beginTransaction().replace(R.id.main_fragment_manager, Patient, "Patient").commit();
         });
+        addDoc.setOnClickListener(v ->{
+            Fragment docAdd = new addDoc();
+            header.setText("Добавить доктора");
+            fm.beginTransaction().replace(R.id.main_fragment_manager, docAdd, "Adding doctor").commit();
+        });
     }
 
     @Override
@@ -99,5 +116,28 @@ public class Reception extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_reception, container, false);
+    }
+
+    public void getRole(){
+        db.collection("users")
+                .whereEqualTo("email", usr.getEmail().toString())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String title;
+                        for (DocumentSnapshot doc : task.getResult()) {
+                            title = doc.get("role").toString();
+                            usrRole = title;
+                            System.out.println(usrRole);
+                        }
+                        if (usrRole.equals("admin")){
+                            addDoc.setVisibility(View.VISIBLE);
+                            addDoc.setClickable(true);
+                        }else{
+                            addDoc.setVisibility(View.INVISIBLE);
+                            addDoc.setClickable(false);
+                        }
+                    }
+                });
     }
 }
